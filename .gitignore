@@ -1,0 +1,5 @@
+# Ignore all .cph folders
+**/.cph/
+
+# Ignore all .vscode folders
+**/.vscode/
