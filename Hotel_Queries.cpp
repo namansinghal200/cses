@@ -20,17 +20,21 @@ public:
             update(2 * v, tl, tm, x, y);
         else
             update(2 * v + 1, tm + 1, tr, x, y);
-        return seg[v] = seg[2 * v + 1] + seg[2 * v];
+        return seg[v] = max(seg[2 * v + 1], seg[2 * v]);
     }
-    int query(int v, int tl, int tr, int l, int r)
+    pair<int, int> query(int v, int tl, int tr, int x)
     {
-        if (l > r)
-            return 0;
-        if (tl == l && tr == r)
-            return seg[v];
+        // cout << v << " " << seg[v] << " " << x << " " << tl << " " << tr << endl;
+        if (seg[v] < x)
+            return {-1, -1};
+        if (tl == tr)
+            return {seg[v], tl};
         int tm = (tl + tr) / 2;
 
-        return query(2 * v, tl, tm, l, min(tm, r)) + query(2 * v + 1, tm + 1, tr, max(tm + 1, l), r);
+        pair<int, int> ans = query(2 * v, tl, tm, x);
+        if (ans.first != -1)
+            return ans;
+        return query(2 * v + 1, tm + 1, tr, x);
     }
     void print()
     {
@@ -54,9 +58,19 @@ void solve()
     // seg.print();
     for (int i = 0; i < q; i++)
     {
-        int x, y;
-        cin >> x >> y;
-        cout << seg.query(1, 0, n - 1, x - 1, y - 1) << endl;
+        int x;
+        cin >> x;
+        pair<int, int> v = seg.query(1, 0, n - 1, x);
+        // cout << v.first << " " << v.second << endl;
+        if (v.first == -1)
+            cout << 0 << " ";
+        else
+        {
+            cout << v.second + 1 << " ";
+            // cout << v.first << " " << v.second << endl;
+            seg.update(1, 0, n - 1, v.second, v.first - x);
+            // seg.print();
+        }
     }
 }
 #undef int

@@ -9,7 +9,7 @@ class Segtree
 public:
     Segtree(int n)
     {
-        seg.resize(4 * n + 1);
+        seg.resize(4 * n + 1, LLONG_MAX);
     }
     int update(int v, int tl, int tr, int x, int y)
     {
@@ -20,17 +20,17 @@ public:
             update(2 * v, tl, tm, x, y);
         else
             update(2 * v + 1, tm + 1, tr, x, y);
-        return seg[v] = seg[2 * v + 1] + seg[2 * v];
+        return seg[v] = min(seg[2 * v + 1], seg[2 * v]);
     }
     int query(int v, int tl, int tr, int l, int r)
     {
         if (l > r)
-            return 0;
+            return LLONG_MAX;
         if (tl == l && tr == r)
             return seg[v];
         int tm = (tl + tr) / 2;
 
-        return query(2 * v, tl, tm, l, min(tm, r)) + query(2 * v + 1, tm + 1, tr, max(tm + 1, l), r);
+        return min(query(2 * v, tl, tm, l, min(tm, r)), query(2 * v + 1, tm + 1, tr, max(tm + 1, l), r));
     }
     void print()
     {

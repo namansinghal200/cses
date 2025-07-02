@@ -20,7 +20,7 @@ public:
             update(2 * v, tl, tm, x, y);
         else
             update(2 * v + 1, tm + 1, tr, x, y);
-        return seg[v] = seg[2 * v + 1] + seg[2 * v];
+        return seg[v] = seg[2 * v + 1] ^ seg[2 * v];
     }
     int query(int v, int tl, int tr, int l, int r)
     {
@@ -30,7 +30,7 @@ public:
             return seg[v];
         int tm = (tl + tr) / 2;
 
-        return query(2 * v, tl, tm, l, min(tm, r)) + query(2 * v + 1, tm + 1, tr, max(tm + 1, l), r);
+        return query(2 * v, tl, tm, l, min(tm, r)) ^ query(2 * v + 1, tm + 1, tr, max(tm + 1, l), r);
     }
     void print()
     {

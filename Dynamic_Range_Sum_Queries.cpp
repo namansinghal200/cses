@@ -54,9 +54,17 @@ void solve()
     // seg.print();
     for (int i = 0; i < q; i++)
     {
-        int x, y;
-        cin >> x >> y;
-        cout << seg.query(1, 0, n - 1, x - 1, y - 1) << endl;
+        int t, x, y;
+        cin >> t >> x >> y;
+        if (t == 1)
+        {
+            seg.update(1, 0, n - 1, x - 1, y);
+        }
+        else
+        {
+
+            cout << seg.query(1, 0, n - 1, x - 1, y - 1) << endl;
+        }
     }
 }
 #undef int
